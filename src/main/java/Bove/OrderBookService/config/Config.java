@@ -38,14 +38,14 @@ public class Config {
         assert results != null;
 
         results.forEach(res -> {
+            res.setExchange("exchange");
             ibmService.saveOrder(res);
         });
     }
 
     @Scheduled(fixedDelay = 1000)
     public void print(){
-//        Iterable<Ibm> res = ibmService.findAll();
-        List<Ibm> res = ibmService.findAllAndSort();
+        List<Ibm> res = ibmService.findAllPageAndSortBySide();
         for (Ibm ibm: res){
             System.out.println(ibm);
         }

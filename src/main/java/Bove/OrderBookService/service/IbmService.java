@@ -47,8 +47,18 @@ public class IbmService {
     }
 
     public List<Ibm> findAllPageAndSort () {
-        Pageable p = PageRequest.of(1, 5, Sort.by("price"));
+        Pageable p = PageRequest.of(1, 5, Sort.by("price").ascending());
         Page<Ibm> page = exchange1PageAndSort.findAll(p);
+
+        if(page.hasContent())
+            return page.getContent();
+        else
+            return new ArrayList<Ibm>();
+    }
+
+    public List<Ibm> findAllPageAndSortBySide () {
+        Pageable p = PageRequest.of(1, 5, Sort.by("price").ascending());
+        Page<Ibm> page = exchange1PageAndSort.findAllBySide("SELL", p);
 
         if(page.hasContent())
             return page.getContent();
