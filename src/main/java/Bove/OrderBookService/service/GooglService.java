@@ -1,8 +1,8 @@
 package Bove.OrderBookService.service;
 
-import Bove.OrderBookService.model.Ibm;
-import Bove.OrderBookService.repo.IbmPageSortRepo;
-import Bove.OrderBookService.repo.IbmSearchRepo;
+import Bove.OrderBookService.model.Googl;
+import Bove.OrderBookService.repo.GooglPageSortRepo;
+import Bove.OrderBookService.repo.GooglSearchRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,27 +14,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class IbmService {
+public class GooglService {
     @Autowired
-    IbmSearchRepo ibmSearchRepo;
+    GooglSearchRepo googlSearchRepo;
 
     @Autowired
-    IbmPageSortRepo ibmPageSortRepo;
+    GooglPageSortRepo googlPageSortRepo;
 
-    public void saveMany(List<Ibm> l) { ibmSearchRepo.saveAll(l); }
+    public void saveMany(List<Googl> l) { googlSearchRepo.saveAll(l); }
 
     public void deleteAll(){
-        ibmSearchRepo.deleteAll();
+        googlSearchRepo.deleteAll();
     }
 
-    public List<Ibm> findAllPageAndSortBySide (String side, int size) {
+    public List<Googl> findAllPageAndSortBySide (String side, int size) {
         Pageable p = PageRequest.of(0, size, Sort.by("price").ascending());
-        Page<Ibm> page = ibmPageSortRepo.findAllBySideAndOrderType(side, "LIMIT", p);
+        Page<Googl> page = googlPageSortRepo.findAllBySideAndOrderType(side, "LIMIT", p);
 
-        if(page.hasContent()) {
+        if(page.hasContent())
             return page.getContent();
-        }
         else
-            return new ArrayList<Ibm>();
+            return new ArrayList<Googl>();
     }
 }

@@ -24,29 +24,15 @@ public class AaplService {
     @Autowired
     AaplPageSortRepo aaplPageSortRepo;
 
-    public void saveOrder(Aapl o) {
-        aaplSearchRepo.save(o);
-    }
-
-    public Aapl findOrderById(String id){
-        return aaplSearchRepo.findById(id).orElse(new Aapl());
-    }
-
-    public Iterable<Aapl> findAll() {
-        return aaplSearchRepo.findAll();
-    }
-
-    public List<Aapl> findAllAndSort() {
-        return (List<Aapl>) aaplPageSortRepo.findAll(Sort.by("price").ascending());
-    }
+    public void saveMany(List<Aapl> l) { aaplSearchRepo.saveAll(l); }
 
     public void deleteAll(){
         aaplSearchRepo.deleteAll();
     }
 
-    public List<Aapl> findAllPageAndSort () {
-        Pageable p = PageRequest.of(1, 5, Sort.by("price").ascending());
-        Page<Aapl> page = aaplPageSortRepo.findAll(p);
+    public List<Aapl> findAllPageAndSortBySide (String side, int size) {
+        Pageable p = PageRequest.of(0, size, Sort.by("price").ascending());
+        Page<Aapl> page = aaplPageSortRepo.findAllBySideAndOrderType(side, "LIMIT", p);
 
         if(page.hasContent())
             return page.getContent();
@@ -54,13 +40,29 @@ public class AaplService {
             return new ArrayList<Aapl>();
     }
 
-    public List<Aapl> findAllPageAndSortBySide () {
-        Pageable p = PageRequest.of(1, 5, Sort.by("price").ascending());
-        Page<Aapl> page = aaplPageSortRepo.findAllBySide("SELL", p);
+//    public void saveOrder(Aapl o) {
+//        aaplSearchRepo.save(o);
+//    }
 
-        if(page.hasContent())
-            return page.getContent();
-        else
-            return new ArrayList<Aapl>();
-    }
+//    public Aapl findOrderById(String id){
+//        return aaplSearchRepo.findById(id).orElse(new Aapl());
+//    }
+//
+//    public Iterable<Aapl> findAll() {
+//        return aaplSearchRepo.findAll();
+//    }
+//
+//    public List<Aapl> findAllAndSort() {
+//        return (List<Aapl>) aaplPageSortRepo.findAll(Sort.by("price").ascending());
+//    }
+
+//    public List<Aapl> findAllPageAndSort () {
+//        Pageable p = PageRequest.of(0, 5, Sort.by("price").ascending());
+//        Page<Aapl> page = aaplPageSortRepo.findAll(p);
+//
+//        if(page.hasContent())
+//            return page.getContent();
+//        else
+//            return new ArrayList<Aapl>();
+//    }
 }
