@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IbmPageSortRepo extends PagingAndSortingRepository<Ibm, String> {
     Page<Ibm> findAllBySide(String side, Pageable p);
+
+    Page<Ibm> findAllBySideAndOrderType(String side, String type, Pageable p);
 }
