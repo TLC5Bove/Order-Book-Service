@@ -1,5 +1,6 @@
 package Bove.OrderBookService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
-@Document(indexName = "exchange-1")
+@Document(indexName = "ibm")
 @Data
 public class Ibm implements Stock{
     @Id
@@ -26,6 +27,7 @@ public class Ibm implements Stock{
     @Field(type = FieldType.Text, name = "side")
     private String side;
 
+    @JsonIgnore
     private List<Executions> executions;
 
     @Field(type = FieldType.Text, name = "orderId")

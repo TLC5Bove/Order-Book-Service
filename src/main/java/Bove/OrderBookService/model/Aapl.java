@@ -1,12 +1,17 @@
 package Bove.OrderBookService.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
-public class Aapl {
+@Document(indexName = "aapl")
+@Data
+public class Aapl implements Stock{
     @Id
     private String id;
 
@@ -22,13 +27,17 @@ public class Aapl {
     @Field(type = FieldType.Text, name = "side")
     private String side;
 
+    @JsonIgnore
     private List<Executions> executions;
 
     @Field(type = FieldType.Text, name = "orderId")
-    private String orderId;
+    private String orderID;
 
     @Field(type = FieldType.Text, name = "orderType")
     private String orderType;
+
+    @Field(type = FieldType.Text, name = "exchange")
+    private String exchange;
 
     @Field(type = FieldType.Integer, name = "cumulatitiveQuantity")
     private int cumulatitiveQuantity;
