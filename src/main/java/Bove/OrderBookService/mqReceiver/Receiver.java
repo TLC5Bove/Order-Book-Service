@@ -16,7 +16,7 @@ public class Receiver {
     @Autowired
     RedisTemplate<String, String> template;
 
-    @RabbitListener(queues = RabbitConfig.QUEUE)
+    @RabbitListener(queues = RabbitConfig.OBS_QUEUE)
     public void listener(IdAndExchange message) {
         save(message.getId());
         System.out.println(message);

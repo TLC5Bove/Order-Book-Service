@@ -21,7 +21,7 @@ public class AaplController {
 
     @GetMapping(value = "/")
     public List<Aapl> home(){
-        Iterable<Aapl> aapl = aaplService.findAll();
+        Iterable<Aapl> aapl = aaplService.findAllPageAndSortBySide("SELL", 10);
         List<Aapl> list = new ArrayList<>();
         aapl.forEach(list::add);
 
@@ -29,7 +29,7 @@ public class AaplController {
     }
 
     @DeleteMapping("/")
-    public void dele(){
+    public void delete(){
         aaplService.deleteAll();
     }
 }

@@ -10,25 +10,25 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitConfig {
-    public static final String QUEUE = "message_queue";
-    public static final String EXCHANGE = "message_exchange";
+    public static final String OBS_QUEUE = "obs_queue";
+    public static final String OBS_EXCHANGE = "obs_exchange";
     public static final String ROUTING_KEY = "message_routingKey";
 
     @Bean
-    public Queue queue() {
-        return  new Queue(QUEUE);
+    public Queue obs_queue() {
+        return  new Queue(OBS_QUEUE);
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(EXCHANGE);
+    public DirectExchange obs_exchange() {
+        return new DirectExchange(OBS_EXCHANGE);
     }
 
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
+    public Binding binding() {
         return BindingBuilder
-                .bind(queue)
-                .to(exchange)
+                .bind(obs_queue())
+                .to(obs_exchange())
                 .with(ROUTING_KEY);
     }
 
