@@ -1,6 +1,7 @@
 package Bove.OrderBookService.mqReceiver;
 
 import Bove.OrderBookService.config.RabbitConfig;
+import Bove.OrderBookService.model.message.IdAndExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,8 +17,8 @@ public class Receiver {
     RedisTemplate<String, String> template;
 
     @RabbitListener(queues = RabbitConfig.QUEUE)
-    public void listener(String message) {
-        save(message);
+    public void listener(IdAndExchange message) {
+        save(message.getId());
         System.out.println(message);
     }
 
