@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,12 +15,13 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Configuration
-@EnableScheduling
+//@EnableScheduling
 public class Config implements SchedulingConfigurer {
     @Autowired
     AaplService aaplService;
@@ -45,6 +47,11 @@ public class Config implements SchedulingConfigurer {
     @Autowired
     TslaService tslaService;
 
+    @Autowired
+    RedisTemplate<String, String> template;
+
+    private final String setReference = "OpenIds";
+
     @Scheduled(fixedDelay = 1000)
     public void getAapl(){
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>AAPL is running");
@@ -68,16 +75,30 @@ public class Config implements SchedulingConfigurer {
         List<Aapl> results = response.block();
         List<Aapl> results2 = response2.block();
 
-        aaplService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        aaplService.saveMany(results);
-        aaplService.saveMany(results2);
+        List<Aapl> res = new ArrayList<>();
+        List<Aapl> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        aaplService.saveMany(res);
+        aaplService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -103,16 +124,30 @@ public class Config implements SchedulingConfigurer {
         List<Amzn> results = response.block();
         List<Amzn> results2 = response2.block();
 
-        amznService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        amznService.saveMany(results);
-        amznService.saveMany(results2);
+        List<Amzn> res = new ArrayList<>();
+        List<Amzn> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        amznService.saveMany(res);
+        amznService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -138,16 +173,30 @@ public class Config implements SchedulingConfigurer {
         List<Googl> results = response.block();
         List<Googl> results2 = response2.block();
 
-        googlService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        googlService.saveMany(results);
-        googlService.saveMany(results2);
+        List<Googl> res = new ArrayList<>();
+        List<Googl> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        googlService.saveMany(res);
+        googlService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -174,16 +223,30 @@ public class Config implements SchedulingConfigurer {
         List<Ibm> results = response.block();
         List<Ibm> results2 = response2.block();
 
-        ibmService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        ibmService.saveMany(results);
-        ibmService.saveMany(results2);
+        List<Ibm> res = new ArrayList<>();
+        List<Ibm> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        ibmService.saveMany(res);
+        ibmService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -210,16 +273,30 @@ public class Config implements SchedulingConfigurer {
         List<Msft> results = response.block();
         List<Msft> results2 = response2.block();
 
-        msftService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        msftService.saveMany(results);
-        msftService.saveMany(results2);
+        List<Msft> res = new ArrayList<>();
+        List<Msft> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        msftService.saveMany(res);
+        msftService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -246,16 +323,30 @@ public class Config implements SchedulingConfigurer {
         List<Nflx> results = response.block();
         List<Nflx> results2 = response2.block();
 
-        nflxService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        nflxService.saveMany(results);
-        nflxService.saveMany(results2);
+        List<Nflx> res = new ArrayList<>();
+        List<Nflx> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        nflxService.saveMany(res);
+        nflxService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -282,16 +373,30 @@ public class Config implements SchedulingConfigurer {
         List<Orcl> results = response.block();
         List<Orcl> results2 = response2.block();
 
-        orclService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        orclService.saveMany(results);
-        orclService.saveMany(results2);
+        List<Orcl> res = new ArrayList<>();
+        List<Orcl> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        orclService.saveMany(res);
+        orclService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -318,16 +423,30 @@ public class Config implements SchedulingConfigurer {
         List<Tsla> results = response.block();
         List<Tsla> results2 = response2.block();
 
-        tslaService.deleteAll();
-
         assert results != null;
         assert results2 != null;
 
-        results.forEach(r -> r.setExchange("exchange"));
-        results2.forEach(r -> r.setExchange("exchange2"));
+        aaplService.deleteAll();
 
-        tslaService.saveMany(results);
-        tslaService.saveMany(results2);
+        List<Tsla> res = new ArrayList<>();
+        List<Tsla> res2 = new ArrayList<>();
+
+        results.forEach(r -> {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange");
+                res.add(r);
+            }
+        });
+
+        results2.forEach(r -> {
+            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+                r.setExchange("exchange2");
+                res.add(r);
+            }
+        });
+
+        tslaService.saveMany(res);
+        tslaService.saveMany(res2);
     }
 
     @Override
