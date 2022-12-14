@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 @Configuration
-//@EnableScheduling
+@EnableScheduling
 public class Config implements SchedulingConfigurer {
     @Autowired
     AaplService aaplService;
@@ -65,7 +65,7 @@ public class Config implements SchedulingConfigurer {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Aapl>>() {
                 });
-        Mono<List<Aapl>> response2 = client.get()
+        Mono<List<Aapl>> response2 = client2.get()
                 .uri("/AAPL/open")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -81,24 +81,22 @@ public class Config implements SchedulingConfigurer {
         aaplService.deleteAll();
 
         List<Aapl> res = new ArrayList<>();
-        List<Aapl> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         aaplService.saveMany(res);
-        aaplService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -114,7 +112,7 @@ public class Config implements SchedulingConfigurer {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Amzn>>() {
                 });
-        Mono<List<Amzn>> response2 = client.get()
+        Mono<List<Amzn>> response2 = client2.get()
                 .uri("/AMZN/open")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -127,27 +125,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        amznService.deleteAll();
 
         List<Amzn> res = new ArrayList<>();
-        List<Amzn> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         amznService.saveMany(res);
-        amznService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -163,7 +159,7 @@ public class Config implements SchedulingConfigurer {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<Googl>>() {
                 });
-        Mono<List<Googl>> response2 = client.get()
+        Mono<List<Googl>> response2 = client2.get()
                 .uri("/GOOGL/open")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -176,27 +172,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        googlService.deleteAll();
 
         List<Googl> res = new ArrayList<>();
-        List<Googl> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         googlService.saveMany(res);
-        googlService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -226,27 +220,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        ibmService.deleteAll();
 
         List<Ibm> res = new ArrayList<>();
-        List<Ibm> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         ibmService.saveMany(res);
-        ibmService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -276,20 +268,20 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        msftService.deleteAll();
 
         List<Msft> res = new ArrayList<>();
         List<Msft> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
@@ -326,27 +318,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        nflxService.deleteAll();
 
         List<Nflx> res = new ArrayList<>();
-        List<Nflx> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         nflxService.saveMany(res);
-        nflxService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -376,27 +366,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        orclService.deleteAll();
 
         List<Orcl> res = new ArrayList<>();
-        List<Orcl> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         orclService.saveMany(res);
-        orclService.saveMany(res2);
     }
 
     @Scheduled(fixedDelay = 1000)
@@ -426,27 +414,25 @@ public class Config implements SchedulingConfigurer {
         assert results != null;
         assert results2 != null;
 
-        aaplService.deleteAll();
+        tslaService.deleteAll();
 
         List<Tsla> res = new ArrayList<>();
-        List<Tsla> res2 = new ArrayList<>();
 
         results.forEach(r -> {
-            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange");
                 res.add(r);
             }
         });
 
         results2.forEach(r -> {
-            if (Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r))) {
+            if (!Boolean.TRUE.equals(template.opsForSet().isMember(setReference, r.getOrderID()))) {
                 r.setExchange("exchange2");
                 res.add(r);
             }
         });
 
         tslaService.saveMany(res);
-        tslaService.saveMany(res2);
     }
 
     @Override
